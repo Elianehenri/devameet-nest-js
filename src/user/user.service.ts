@@ -10,7 +10,7 @@ import * as CryptoJS from 'crypto-js';
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
-  ) {}
+  ) { }
 
   async create(dto: RegisterDto) {
     dto.password = CryptoJS.AES.encrypt(
@@ -31,19 +31,22 @@ export class UserService {
 
     return false;
   }
-  
-  async getUserByLoginPassword(email: string, password: string) : Promise<UserDocument | null>{
-    const user = await this.userModel.findOne({email}) as UserDocument;
 
-    if(user){
-        const bytes = CryptoJS.AES.decrypt(user.password, process.env.USER_CYPHER_SECRET_KEY);
-        const savedPassword = bytes.toString(CryptoJS.enc.Utf8);
+  async getUserByLoginPassword(email: string, password: string): Promise<UserDocument | null> {
+    const user = await this.userModel.findOne({ email }) as UserDocument;
 
-        if(password == savedPassword){
-            return user;
-        }
+    if (user) {
+      const bytes = CryptoJS.AES.decrypt(user.password, process.env.USER_CYPHER_SECRET_KEY);
+      const savedPassword = bytes.toString(CryptoJS.enc.Utf8);
+
+      if (password == savedPassword) {
+        return user;
+      }
     }
 
     return null;
+  }
+  async getUserById(id:string){
+    return await this.userModel.findById(id);
 }
 }
