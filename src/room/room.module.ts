@@ -11,7 +11,7 @@ import { RoomGateway } from './room.gateway';
 @Module({
   imports: [ 
     MeetModule, UserModule,
-    MongooseModule.forFeature([
+    MongooseModule.forFeature([//tabela nova de posicao
       { name: Position.name, schema: PositionSchema}
     ])
   ],

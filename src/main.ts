@@ -5,11 +5,12 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: ['error', 'warn', 'log', 'debug', 'verbose'],
+    logger: ['error', 'warn', 'log', 'debug', 'verbose'],//controlar o nivel de logs impresso no console
   });
 
-  app.enableCors();
+  app.enableCors();//permite que cadastre os dominios liberados 
 
+  
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -18,6 +19,7 @@ async function bootstrap() {
     }),
   );
 
+  //setar as requisiçoes com prefixo /api
   app.setGlobalPrefix('api');
 
   //await app.listen(3000);

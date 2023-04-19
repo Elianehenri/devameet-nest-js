@@ -58,7 +58,7 @@ export class RoomGateway implements OnGatewayInit, OnGatewayDisconnect {
       socket => socket.room === link && socket.id === client.id);
       //se nao tem o usuario ma memoria, criar
       if(!existingOnSocket){
-        this.activeSockets.push({room:link, id: client.id, userId});
+        this.activeSockets.push({room:link, id: client.id, userId});//criar participante
         //criar posiçao na sala
         const dto = {
           link,

@@ -20,7 +20,7 @@ export class RoomService {
         @InjectModel(Position.name) private readonly positionModel: Model<PositionDocument>,
         private readonly userService: UserService
     ) { }
-
+//listar objetos da sala
     async getRoom(link: string) {
         this.logger.debug(`getRoom - ${link}`);
 
@@ -34,14 +34,14 @@ export class RoomService {
             objects
         };
     }
-
+//listar posicao de cada um na sala
     async listUsersPositionByLink(link: string){
         this.logger.debug(`listUsersPositionByLink - ${link}`);
 
         const meet = await this._getMeet(link);
         return await this.positionModel.find({meet});
     }
-
+//deletar o usuario 
     async deleteUsersPosition(clientId: string){
         this.logger.debug(`deleteUsersPosition - ${clientId}`);
         return await this.positionModel.deleteMany({clientId});

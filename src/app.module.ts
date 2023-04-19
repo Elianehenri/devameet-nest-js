@@ -11,8 +11,8 @@ import { RoomModule } from './room/room.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.DATABASE_URL),
+    ConfigModule.forRoot(),//configuraçao da env
+    MongooseModule.forRoot(process.env.DATABASE_URL),//conectar no banco mongo
     AuthModule,
     UserModule,
     MeetModule,
@@ -20,7 +20,7 @@ import { RoomModule } from './room/room.module';
   ],
   controllers: [],
   providers: [
-   {provide: APP_GUARD, useClass: JwtAuthGuard}
+   {provide: APP_GUARD, useClass: JwtAuthGuard}//blindar sistema
   ],
 })
 export class AppModule {}

@@ -2,6 +2,7 @@
 import {IsEmail, MinLength, MaxLength, Matches, IsString} from 'class-validator'
 import { UserMessagesHelper } from '../helpers/messages.helper';
 
+//mesmos campos do schema,menos props
 export class RegisterDto {
     @MinLength(2, {message: UserMessagesHelper.REGISTER_NAME_NOT_VALID})
     name:string;

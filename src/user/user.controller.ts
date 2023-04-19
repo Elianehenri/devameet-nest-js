@@ -24,7 +24,7 @@ export class UserController{
             id: user._id
         }
     }
-    
+    //alterar dados
     @Put()
     @HttpCode(HttpStatus.OK)
     async updateUser(@Request() req, @Body() dto: UpdateUserDto){

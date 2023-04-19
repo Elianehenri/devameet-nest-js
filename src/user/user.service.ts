@@ -10,7 +10,7 @@ import { UpdateUserDto } from './dtos/updatuser.dto';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,//userDocuemnt vem de schema
   ) { }
 
   async create(dto: RegisterDto) {
@@ -33,11 +33,12 @@ export class UserService {
     return false;
   }
 
+  // metodo
   async getUserByLoginPassword(email: string, password: string): Promise<UserDocument | null> {
-    const user = await this.userModel.findOne({ email }) as UserDocument;
+    const user = await this.userModel.findOne({ email }) as UserDocument;//ver se o ususario existe
 
     if (user) {
-      const bytes = CryptoJS.AES.decrypt(user.password, process.env.USER_CYPHER_SECRET_KEY);
+      const bytes = CryptoJS.AES.decrypt(user.password, process.env.USER_CYPHER_SECRET_KEY);//descriptograr senha
       const savedPassword = bytes.toString(CryptoJS.enc.Utf8);
 
       if (password == savedPassword) {
@@ -47,9 +48,13 @@ export class UserService {
 
     return null;
   }
+
+  //usuario por id
   async getUserById(id: string) {
     return await this.userModel.findById(id);
   }
+
+  //atualiar os dados
   async updateUser(id: string, dto: UpdateUserDto) {
     return await this.userModel.findByIdAndUpdate(id, dto);
   }

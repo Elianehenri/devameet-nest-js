@@ -37,7 +37,7 @@ export class MeetController {
         const { id } = params;
         await this.service.deleteMeetByUser(userId, id);
     }
-
+    //buscar meet por id
     @Get('objects/:id')
     async getObjectsByMeetId(@Request() req, @Param() params){
         const { userId } = req?.user;

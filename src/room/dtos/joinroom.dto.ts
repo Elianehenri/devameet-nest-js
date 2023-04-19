@@ -2,7 +2,7 @@
 import { IsNotEmpty } from "class-validator";
 import { RoomMessagesHelper } from "../helpers/roommesages.helper";
 
-
+//entrar na sala
 export class JoinRoomDto{    
     @IsNotEmpty({message: RoomMessagesHelper.JOIN_USER_NOT_VALID})
     userId:string;

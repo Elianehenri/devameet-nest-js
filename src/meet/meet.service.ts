@@ -47,6 +47,7 @@ export class MeetService {
         return await this.model.deleteOne({ user: userId, _id: meetId });
     }
     
+    //listar objetos da reuniao
     async getMeetObjects(meetId: string, userId: string) {
         this.logger.debug(`getMeetObjects - ${userId} - ${meetId}`);
         const user = await this.userService.getUserById(userId);
