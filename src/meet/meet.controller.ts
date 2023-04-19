@@ -9,10 +9,10 @@ import { UpdateMeetDto } from './dtos/updatemeet.dto';
 export class MeetController {
     constructor(
         private readonly service: MeetService
-    ){}
+    ) { }
 
     @Get()
-    async getUser(@Request() req){
+    async getUser(@Request() req) {
         const { userId } = req?.user;
 
         const result = await this.service.getMeetsByUser(userId);
@@ -25,28 +25,36 @@ export class MeetController {
         }) as GetMeetDto);
     }
 
+    @Get(':id')
+    async getMeetById(@Request() req, @Param() params) {
+        const { userId } = req?.user;
+        const { id } = params;
+
+        return await this.service.getMeetById(id, userId);
+    }
+
     @Post()
-    async createMeet(@Request() req, @Body() dto: CreateMeetDto){
+    async createMeet(@Request() req, @Body() dto: CreateMeetDto) {
         const { userId } = req?.user;
         await this.service.createMeet(userId, dto);
     }
 
     @Delete(':id')
-    async deleteMeet(@Request() req, @Param() params){
+    async deleteMeet(@Request() req, @Param() params) {
         const { userId } = req?.user;
         const { id } = params;
         await this.service.deleteMeetByUser(userId, id);
     }
     //buscar meet por id
     @Get('objects/:id')
-    async getObjectsByMeetId(@Request() req, @Param() params){
+    async getObjectsByMeetId(@Request() req, @Param() params) {
         const { userId } = req?.user;
         const { id } = params;
         return await this.service.getMeetObjects(id, userId);
     }
 
     @Put(':id')
-    async updateMeet(@Request() req, @Param() params, @Body() dto: UpdateMeetDto){
+    async updateMeet(@Request() req, @Param() params, @Body() dto: UpdateMeetDto) {
         const { userId } = req?.user;
         const { id } = params;
         await this.service.update(id, userId, dto);
