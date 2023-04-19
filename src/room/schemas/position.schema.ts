@@ -6,7 +6,7 @@ import { User } from "src/user/schemas/user.schema";
 
 export type PositionDocument = HydratedDocument<Position>
 
-@Schema()
+@Schema()//tabela banco mongo
 export class Position {
 
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: Meet.name})

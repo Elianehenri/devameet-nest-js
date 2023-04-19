@@ -4,6 +4,7 @@ import { HydratedDocument } from "mongoose";
 
 export type UserDocument = HydratedDocument<User>;
 
+//objeto relacioanl ,o que vai mapear a nossa tabela
 @Schema()
 export class User {
     @Prop({required: true})

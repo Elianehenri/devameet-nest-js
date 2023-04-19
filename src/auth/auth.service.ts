@@ -7,7 +7,7 @@ import { UserMessagesHelper } from 'src/user/helpers/messages.helper';
 import { RegisterDto } from 'src/user/dtos/register.dto';
 import { JwtService } from '@nestjs/jwt';
 
-@Injectable()
+@Injectable()//decorater
 export class AuthService{
 
     private logger = new Logger(AuthService.name);
@@ -26,7 +26,7 @@ export class AuthService{
         }
 
        
-        const tokenPayload = {email: user.email, sub: user._id };
+        const tokenPayload = {email: user.email, sub: user._id };//criar payload do token
 
         return {
             email: user.email,

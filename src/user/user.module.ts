@@ -7,9 +7,9 @@ import { UserController } from './user.controller'
 
 @Module({
     imports: 
-    [MongooseModule.forFeature([{name: User.name, schema: UserSchema}])],
+    [MongooseModule.forFeature([{name: User.name, schema: UserSchema}])],//criar tabela que preciso neste module
     controllers: [UserController],
     providers: [UserService],
-    exports: [MongooseModule, UserService]
+    exports: [MongooseModule, UserService]//expertar pra que alguem possa usar 
 })
 export class UserModule{}

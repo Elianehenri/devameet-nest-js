@@ -8,9 +8,9 @@ import { Meet, MeetSchema } from './schemas/meet.schema';
 import { MeetObject, MeetObjectSchema } from './schemas/meetobject.schema';
 
 @Module({
-  imports: [UserModule, MongooseModule.forFeature([
-    {name: Meet.name, schema: MeetSchema},
-    {name: MeetObject.name, schema: MeetObjectSchema},
+  imports: [UserModule, MongooseModule.forFeature([//banco de dados
+    {name: Meet.name, schema: MeetSchema},//tabela
+    {name: MeetObject.name, schema: MeetObjectSchema},//tabela nova
   ])],
   controllers: [MeetController],
   providers:[MeetService],
