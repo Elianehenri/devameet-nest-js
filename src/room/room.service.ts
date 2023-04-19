@@ -20,9 +20,9 @@ export class RoomService {
         @InjectModel(Position.name) private readonly positionModel: Model<PositionDocument>,
         private readonly userService: UserService
     ) { }
-//listar objetos da sala
+    //listar objetos da sala
     async getRoom(link: string) {
-        this.logger.debug(`getRoom - ${link}`);
+        //this.logger.debug(`getRoom - ${link}`);
 
         const meet = await this._getMeet(link);
         const objects = await this.objectModel.find({ meet });
@@ -34,26 +34,26 @@ export class RoomService {
             objects
         };
     }
-//listar posicao de cada um na sala
-    async listUsersPositionByLink(link: string){
-        this.logger.debug(`listUsersPositionByLink - ${link}`);
+    //listar posicao de cada um na sala
+    async listUsersPositionByLink(link: string) {
+        //this.logger.debug(`listUsersPositionByLink - ${link}`);
 
         const meet = await this._getMeet(link);
-        return await this.positionModel.find({meet});
+        return await this.positionModel.find({ meet });
     }
-//deletar o usuario 
-    async deleteUsersPosition(clientId: string){
-        this.logger.debug(`deleteUsersPosition - ${clientId}`);
-        return await this.positionModel.deleteMany({clientId});
+    //deletar o usuario 
+    async deleteUsersPosition(clientId: string) {
+        // this.logger.debug(`deleteUsersPosition - ${clientId}`);
+        return await this.positionModel.deleteMany({ clientId });
     }
 
-    async updateUserPosition(clientId: string, dto : UpdateUserPositionDto){
-        this.logger.debug(`listUsersPositionByLink - ${dto.link}`);
+    async updateUserPosition(clientId: string, dto: UpdateUserPositionDto) {
+        //this.logger.debug(`listUsersPositionByLink - ${dto.link}`);
 
         const meet = await this._getMeet(dto.link);
         const user = await this.userService.getUserById(dto.userId);
 
-        if(!user){
+        if (!user) {
             throw new BadRequestException(RoomMessagesHelper.JOIN_USER_NOT_VALID);
         }
 
@@ -63,17 +63,17 @@ export class RoomService {
             user,
             meet,
             name: user.name,
-            avatar: user.avatar
+            avatar: user.avatar || 'avatar_01'
         }
 
-        const usersInRoom = await this.positionModel.find({meet});
+        const usersInRoom = await this.positionModel.find({ meet });
         const loogedUserInRoom = usersInRoom.find(u =>
             u.user.toString() === user._id.toString() || u.clientId === clientId);
 
-        if(loogedUserInRoom){
-            await this.positionModel.findByIdAndUpdate({_id: loogedUserInRoom._id},position);
-        }else{
-            if(usersInRoom && usersInRoom.length > 10){
+        if (loogedUserInRoom) {
+            await this.positionModel.findByIdAndUpdate({ _id: loogedUserInRoom._id }, position);
+        } else {
+            if (usersInRoom && usersInRoom.length > 10) {
                 throw new BadRequestException(RoomMessagesHelper.ROOM_MAX_USERS);
             };
 
@@ -81,12 +81,12 @@ export class RoomService {
         }
     }
 
-    async updateUserMute(dto:ToglMuteDto){
-        this.logger.debug(`updateUserMute - ${dto.link} - ${dto.userId}`);
+    async updateUserMute(dto: ToglMuteDto) {
+        // this.logger.debug(`updateUserMute - ${dto.link} - ${dto.userId}`);
 
         const meet = await this._getMeet(dto.link);
         const user = await this.userService.getUserById(dto.userId);
-        await this.positionModel.updateMany({user, meet}, {muted: dto.muted});
+        await this.positionModel.updateMany({ user, meet }, { muted: dto.muted });
     }
 
     async _getMeet(link: string) {
