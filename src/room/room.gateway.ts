@@ -69,6 +69,12 @@ export class RoomGateway implements OnGatewayInit, OnGatewayDisconnect {
       } as UpdateUserPositionDto
 
       await this.service.updateUserPosition(client.id, dto);
+      //desafio
+      const users = await this.service.listUsersPositionByLink(link);
+
+      this.wss.emit(`${link}-update-user-list`, { users });
+
+      client.broadcast.emit(`${link}-add-user`, { user: client.id });
 
     }
     //pegar a lista de usuarios atulaizada
