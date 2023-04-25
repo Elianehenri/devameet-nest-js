@@ -9,6 +9,7 @@ import { ToglMuteDto } from './dtos/toglMute.dto';
 import { UpdateUserPositionDto } from './dtos/updateposition.dto';
 import { Position, PositionDocument } from './schemas/position.schema';
 import { RoomMessagesHelper } from './helpers/roommesages.helper';
+import { positionRoom } from './dtos/positionRoom.dto';
 
 @Injectable()
 export class RoomService {
@@ -22,7 +23,7 @@ export class RoomService {
     ) { }
     //listar objetos da sala
     async getRoom(link: string) {
-        //this.logger.debug(`getRoom - ${link}`);
+        this.logger.debug(`getRoom - ${link}`);
 
         const meet = await this._getMeet(link);
         const objects = await this.objectModel.find({ meet });
@@ -36,19 +37,42 @@ export class RoomService {
     }
     //listar posicao de cada um na sala
     async listUsersPositionByLink(link: string) {
-        //this.logger.debug(`listUsersPositionByLink - ${link}`);
+        this.logger.debug(`listUsersPositionByLink - ${link}`);
 
         const meet = await this._getMeet(link);
-        return await this.positionModel.find({ meet });
+        return await this.positionModel.find({ meet: meet, positionRoom: true });
     }
     //deletar o usuario 
-    async deleteUsersPosition(clientId: string) {
-        // this.logger.debug(`deleteUsersPosition - ${clientId}`);
-        return await this.positionModel.deleteMany({ clientId });
+    async deleteUsersPosition(clientId: string, dto: positionRoom) {
+       this.logger.debug(`deleteUsersPosition - ${clientId}`);
+
+        const meet = await this._getMeet(dto.link);
+        const user = await this.userService.getUserById(dto.userId);
+     
+        
+        if (!user) {
+            throw new  BadRequestException(RoomMessagesHelper.JOIN_USER_NOT_VALID);
+        }
+
+        const positionActual = {
+            ...dto,
+            clientId,
+            user,
+            meet,
+            name: user.name,
+            avatar: user.avatar,
+        };
+      
+        const position = await this.positionModel.find({
+            user: user._id,
+            meet: meet._id,
+        });
+
+        return await this.positionModel.findByIdAndUpdate( position[0]._id, positionActual );
     }
 
     async updateUserPosition(clientId: string, dto: UpdateUserPositionDto) {
-        //this.logger.debug(`listUsersPositionByLink - ${dto.link}`);
+        this.logger.debug(`listUsersPositionByLink - ${dto.link}`);
 
         const meet = await this._getMeet(dto.link);
         const user = await this.userService.getUserById(dto.userId);
@@ -63,8 +87,8 @@ export class RoomService {
             user,
             meet,
             name: user.name,
-            avatar: user.avatar || 'avatar_01'
-        }
+            avatar: user.avatar,
+        };
 
         const usersInRoom = await this.positionModel.find({ meet });
         const loogedUserInRoom = usersInRoom.find(u =>
@@ -82,7 +106,7 @@ export class RoomService {
     }
 
     async updateUserMute(dto: ToglMuteDto) {
-        // this.logger.debug(`updateUserMute - ${dto.link} - ${dto.userId}`);
+        this.logger.debug(`updateUserMute - ${dto.link} - ${dto.userId}`);
 
         const meet = await this._getMeet(dto.link);
         const user = await this.userService.getUserById(dto.userId);
@@ -96,5 +120,11 @@ export class RoomService {
         }
 
         return meet;
+    }
+    
+    async findPositionUser(link: string, userId: string) {
+        const meet = await this.meetModel.findOne({ link });
+
+        return await this.positionModel.find({ meet: meet._id, user: userId });
     }
 }
