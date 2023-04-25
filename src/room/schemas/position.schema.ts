@@ -35,6 +35,9 @@ export class Position {
 
     @Prop({default: false})
     muted:boolean;
+
+    @Prop({default: false})
+    positionRoom:boolean;
 }
 
 export const PositionSchema = SchemaFactory.createForClass(Position);
