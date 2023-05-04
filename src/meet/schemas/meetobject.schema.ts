@@ -6,22 +6,22 @@ import { Meet } from "./meet.schema";
 export type MeetObjectDocument = HydratedDocument<MeetObject>;
 
 @Schema()
-export class MeetObject{
+export class MeetObject {
 
-    @Prop({type: mongoose.Schema.Types.ObjectId, ref: Meet.name})
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Meet.name })
     meet: Meet;
 
-    @Prop({required:true})
+    @Prop({ required: true })
     name: string;
 
-    @Prop({required:true})
+    @Prop({ required: true })
     x: number;
 
-    @Prop({required:true})
+    @Prop({ required: true })
     y: number;
 
-    @Prop({required:true})
-    zIndex: number;
+    @Prop({ required: true })
+    zindex: number;
 
     @Prop()
     orientation: string;
